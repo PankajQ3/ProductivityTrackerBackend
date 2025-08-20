@@ -3,7 +3,8 @@ using ProductivityTrackerBackend.Models;
 
 namespace ProductivityTrackerBackend.Repositories.Interfaces
 {
-    public interface IItemRepository : IGenericRepository<Item, ApplicationDbContext>
+    public interface IGoalRepository : IGenericRepository<Goal, ApplicationDbContext>
     {
+        Task<List<Goal>> GetGoalsByUserIdAsync(int userId);
     }
 }

@@ -17,9 +17,9 @@ namespace ProductivityTrackerBackend.Data
             base.OnModelCreating(modelBuilder);
 
             modelBuilder.Entity<Item>()
-                .HasOne(i => i.User)
+                .HasOne(i => i.Goal)
                 .WithMany()
-                .HasForeignKey(i => i.UserId);
+                .HasForeignKey(i => i.GoalId);
 
             modelBuilder.Entity<TimeLog>()
                 .HasOne(tl => tl.Item)

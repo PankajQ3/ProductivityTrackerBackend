@@ -19,22 +19,8 @@ namespace ProductivityTrackerBackend.Controllers
             _itemService = itemService;
         }
 
-        [HttpGet]
-        public async Task<IActionResult> GetItems()
-        {
-            var userId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier)?.Value);
-            var items = await _itemService.GetItemsByUserIdAsync(userId);
-            return Ok(items);
-        }
 
-        [HttpPost]
-        public async Task<IActionResult> CreateItem([FromBody] Item item)
-        {
-            var userId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier)?.Value);
-            item.UserId = userId;
-            var createdItem = await _itemService.CreateItemAsync(item);
-            return CreatedAtAction(nameof(GetItems), new { id = createdItem.Id }, createdItem);
-        }
+
 
         [HttpPut("{id}")]
         public async Task<IActionResult> UpdateItem(int id, [FromBody] Item updatedItem)

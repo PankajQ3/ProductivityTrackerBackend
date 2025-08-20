@@ -32,12 +32,7 @@ namespace ProductivityTrackerBackend.Repositories
             return await _dbSet.FindAsync(id);
         }
 
-        public async Task<T> AddAsync(T entity)
-        {
-            _dbSet.Add(entity);
-            await _context.SaveChangesAsync();
-            return entity;
-        }
+
 
         public async Task<bool> UpdateAsync(T entity)
         {
@@ -52,6 +47,11 @@ namespace ProductivityTrackerBackend.Repositories
 
             _dbSet.Remove(entity);
             return await _context.SaveChangesAsync() > 0;
+        }
+
+        public Task<T> AddAsync(T entity)
+        {
+            throw new NotImplementedException();
         }
     }
 

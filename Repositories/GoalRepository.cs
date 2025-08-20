@@ -5,15 +5,18 @@ using ProductivityTrackerBackend.Repositories.Interfaces;
 
 namespace ProductivityTrackerBackend.Repositories
 {
-    public class ItemRepository : GenericRepository<Item, ApplicationDbContext>, IItemRepository
+    public class GoalRepository : GenericRepository<Goal, ApplicationDbContext>, IGoalRepository
     {
         private readonly ApplicationDbContext _context;
 
-        public ItemRepository(ApplicationDbContext context) : base(context)
+        public GoalRepository(ApplicationDbContext context) : base(context)
         {
             _context = context;
         }
 
-
+        public async Task<List<Goal>> GetGoalsByUserIdAsync(int userId)
+        {
+            return await _context.Goals.Where(g => g.UserId == userId).ToListAsync();
+        }
     }
 }
