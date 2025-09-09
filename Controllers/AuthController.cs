@@ -59,8 +59,6 @@ namespace ProductivityTrackerBackend.Controllers
         }
     }
 
-
-
     public class UserLoginRequest
     {
         public string Username { get; set; }

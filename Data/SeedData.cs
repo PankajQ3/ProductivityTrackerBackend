@@ -1,9 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.DependencyInjection;
-using ProductivityTrackerBackend.Data;
 using ProductivityTrackerBackend.Models;
-using System;
-using System.Linq;
 
 namespace ProductivityTrackerBackend.Data
 {

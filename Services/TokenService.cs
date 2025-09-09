@@ -23,23 +23,20 @@ namespace ProductivityTrackerBackend.Services
             var claims = new[]
             {
                 new Claim(JwtRegisteredClaimNames.Sub, userId.ToString()),
-                new Claim(JwtRegisteredClaimNames.UniqueName, username),
+                new Claim(JwtRegisteredClaimNames.UniqueName, username)
+                ,
                 new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString())
             };
 
-            var rng = RandomNumberGenerator.Create();
-            char[] keyTemp = new char[32]; // 32 bytes = 256 bits
-            //rng.GetBytes(keyTemp);
 
-            //var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_jwtSettings.Key));
-            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(keyTemp));
+            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_jwtSettings.Key));
             var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
 
             var token = new JwtSecurityToken(
                 issuer: _jwtSettings.Issuer,
                 audience: _jwtSettings.Audience,
                 claims: claims,
-                expires: DateTime.UtcNow.AddMinutes(_jwtSettings.ExpiresInMinutes),
+                expires: DateTime.Now.AddMinutes(_jwtSettings.ExpiresInMinutes),
                 signingCredentials: creds);
 
             return new JwtSecurityTokenHandler().WriteToken(token);

@@ -49,15 +49,32 @@ builder.Services.AddAuthentication(options =>
 })
 .AddJwtBearer(options =>
 {
+    options.IncludeErrorDetails = true; // dev only
     options.TokenValidationParameters = new TokenValidationParameters
     {
-        ValidateIssuer = true,
-        ValidateAudience = true,
-        ValidateLifetime = true,
-        ValidateIssuerSigningKey = true,
+        ValidateIssuer = false,
+        ValidateAudience = false,
+        ValidateLifetime = false,
+        ValidateIssuerSigningKey = false,
         ValidIssuer = jwtSettings["Issuer"],
         ValidAudience = jwtSettings["Audience"],
-        IssuerSigningKey = new SymmetricSecurityKey(key)
+        IssuerSigningKey = new SymmetricSecurityKey(key),
+        ClockSkew = TimeSpan.Zero
+    };
+
+
+
+
+    options.Events = new JwtBearerEvents
+    {
+        OnAuthenticationFailed = context =>
+        {
+            var logger = context.HttpContext.RequestServices
+                .GetRequiredService<ILoggerFactory>()
+                .CreateLogger("JwtBearer");
+            logger.LogError(context.Exception, "JWT authentication failed");
+            return Task.CompletedTask;
+        }
     };
 });
 
@@ -90,7 +107,7 @@ builder.Services.AddSwaggerGen(options =>
                     Id = "Bearer"
                 }
             },
-            new string[] {}
+           Array.Empty<string>()
         }
     });
 });
@@ -112,11 +129,6 @@ using (var scope = app.Services.CreateScope())
         Console.WriteLine($"An error occurred seeding the database: {ex.Message}");
     }
 }
-
-
-
-
-
 
 
 // Configure middleware
