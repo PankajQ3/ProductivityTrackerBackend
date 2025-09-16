@@ -16,20 +16,26 @@ namespace ProductivityTrackerBackend.Data
         {
             base.OnModelCreating(modelBuilder);
 
-            modelBuilder.Entity<Item>()
-                .HasOne(i => i.Goal)
-                .WithMany()
-                .HasForeignKey(i => i.GoalId);
-
-            modelBuilder.Entity<TimeLog>()
-                .HasOne(tl => tl.Item)
-                .WithMany()
-                .HasForeignKey(tl => tl.ItemId);
-
+            // User → Goals (One-to-Many)
             modelBuilder.Entity<Goal>()
                 .HasOne(g => g.User)
-                .WithMany()
-                .HasForeignKey(g => g.UserId);
+                .WithMany(u => u.Goals)
+                .HasForeignKey(g => g.UserId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            // Goal → Items (One-to-Many)
+            modelBuilder.Entity<Item>()
+                .HasOne(i => i.Goal)
+                .WithMany(g => g.Items)
+                .HasForeignKey(i => i.GoalId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            // Item → TimeLogs (One-to-Many)
+            modelBuilder.Entity<TimeLog>()
+                .HasOne(tl => tl.Item)
+                .WithMany(i => i.TimeLogs)
+                .HasForeignKey(tl => tl.ItemId)
+                .OnDelete(DeleteBehavior.Cascade);
         }
     }
 }

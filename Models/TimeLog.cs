@@ -7,8 +7,8 @@
         public DateTime? EndTime { get; set; }
         public int DurationInMinutes { get; set; }
 
+        // Foreign Key to Item
         public int ItemId { get; set; }
-        public Item Item { get; set; }
+        public Item Item { get; set; } = null!;
     }
-
 }
