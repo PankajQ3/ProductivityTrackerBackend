@@ -49,9 +49,11 @@ namespace ProductivityTrackerBackend.Repositories
             return await _context.SaveChangesAsync() > 0;
         }
 
-        public Task<T> AddAsync(T entity)
+        public async Task<T> AddAsync(T entity)
         {
-            throw new NotImplementedException();
+            await _dbSet.AddAsync(entity);
+            await _context.SaveChangesAsync();
+            return entity;
         }
     }
 
